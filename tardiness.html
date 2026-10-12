@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>حصر التأخر الصباحي اليومي للطلاب | بوابة حسّان التعليمية</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+<meta name="theme-color" content="#0F172A">
+<style>
+*{ -webkit-tap-highlight-color:transparent }
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#F6F8FC;--card:#fff;--ink:#0F172A;--muted:#64748B;--line:#E6ECF5;--primary:#4F46E5;--primary-2:#7C3AED;--r:18px;--gold-bg:#FEF3C7}
+body{font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+.nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.9);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1240px;margin:auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.brand{display:flex;gap:11px;align-items:center}
+.logo{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:grid;place-items:center;color:#fff;font-size:20px}
+.brand b{font-size:15.5px;display:block}.brand span{font-size:12px;color:var(--muted)}
+.rolebox{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.role-badge{font-size:12px;font-weight:700;padding:7px 14px;border-radius:100px;background:#F1F5F9;color:#475569}
+.role-badge.admin{background:#EEF2FF;color:#4338CA}
+.rbtn{font-family:inherit;font-size:12.5px;font-weight:700;padding:8px 16px;border-radius:11px;cursor:pointer;border:1.5px solid var(--line);background:#fff}
+.back{font-size:13px;font-weight:700;background:#fff;border:1.5px solid var(--line);padding:9px 16px;border-radius:11px;text-decoration:none;color:var(--ink)}
+.wrap{max-width:1240px;margin:20px auto;padding:0 24px 40px}
+.head{display:flex;align-items:end;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px}
+.head h1{font-size:23px}.head p{font-size:13.5px;color:var(--muted);margin-top:4px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:16px 18px;display:flex;gap:12px;align-items:center}
+.kpi .n{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:21px;flex-shrink:0}
+.kpi b{font-size:23px;display:block;line-height:1}.kpi span{font-size:12px;color:var(--muted);font-weight:600}
+.layout{display:grid;grid-template-columns:370px 1fr;gap:14px;align-items:start}
+@media(max-width:1000px){.layout{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:22px;margin-bottom:14px}
+.panel h3{font-size:15.5px;margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.panel h3::before{content:"";width:5px;height:20px;border-radius:4px;background:linear-gradient(180deg,var(--primary),var(--primary-2))}
+.sub{font-size:12.5px;color:var(--muted);margin-bottom:8px}
+label.flab{font-size:12.5px;font-weight:700;display:block;margin:12px 0 6px;color:#334155}
+input.inp,select.inp,textarea.inp{width:100%;font-family:inherit;font-size:14px;padding:11px 13px;border:1.5px solid var(--line);border-radius:12px;background:#F8FAFC;outline:none}
+input.inp:focus,select.inp:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 4px rgba(79,70,229,.1)}
+select.inp:disabled{opacity:.45;background:#F1F5F9;cursor:not-allowed;box-shadow:none}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.count-hint{font-size:12px;font-weight:700;color:#4338CA;background:#EEF2FF;border-radius:9px;padding:7px 12px;margin-top:8px}
+.btn{border:0;cursor:pointer;font-family:inherit;font-weight:700;border-radius:12px;padding:12px;font-size:14px;transition:.2s;width:100%}
+.btn-p{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;margin-top:16px;box-shadow:0 8px 18px rgba(79,70,229,.3)}
+.btn-p:hover{transform:translateY(-1px)}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.tools button{padding:11px 6px;font-size:12.5px;width:100%;border-radius:11px;border:0;cursor:pointer;font-family:inherit;font-weight:700}
+.t1{background:#EEF2FF;color:#4338CA}.t2{background:#0F172A;color:#fff}.t3{background:#FEE2E2;color:#B91C1C}
+.drop{margin-top:14px;border:1.8px dashed #C7D2FE;background:#F5F3FF;border-radius:14px;padding:16px;text-align:center}
+.drop b{font-size:13px}.drop p{font-size:12px;color:var(--muted);margin:4px 0 8px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.toolbar input,.toolbar select{flex:1;min-width:130px;width:auto;font-family:inherit;font-size:13.5px;padding:10px 12px;border:1.5px solid var(--line);border-radius:11px;background:#F8FAFC}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{background:#0F172A;color:#fff;padding:10px;font-size:12px}
+th:first-child{border-radius:0 10px 10px 0}th:last-child{border-radius:10px 0 0 10px}
+td{padding:10px;border-bottom:1px solid var(--line);text-align:center}
+tr:hover td{background:#F8FAFF}
+tr.top-row td{background:var(--gold-bg)}
+.pill{font-size:11px;font-weight:700;padding:3px 11px;border-radius:100px;display:inline-block}
+.c{background:#EEF2FF;color:#4338CA}.rep{background:#FEF3C7;color:#92400E;border:1px solid #F59E0B}.mins{color:var(--muted);font-size:11.5px}
+.del{background:none;border:0;cursor:pointer;font-size:16px}
+.empty{text-align:center;padding:36px;color:var(--muted);font-size:13.5px}
+.scope label{display:flex;gap:9px;align-items:center;background:#F8FAFC;border:1.5px solid var(--line);border-radius:12px;padding:10px 13px;margin:0 0 8px;font-size:13px;cursor:pointer}
+.scope input{width:auto;accent-color:var(--primary)}
+.scope label.sel{border-color:var(--primary);background:#EEF2FF}
+/* login */
+.login-card{max-width:460px;margin:40px auto}
+.perm-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.perm-grid label{display:flex;gap:8px;align-items:center;font-size:12.5px;font-weight:600;background:#F8FAFC;border:1.5px solid var(--line);border-radius:10px;padding:9px 11px;cursor:pointer}
+.perm-grid input{width:auto;accent-color:var(--primary)}
+.pbadge{font-size:11px;font-weight:700;padding:2px 9px;border-radius:100px;cursor:pointer;border:0;font-family:inherit}
+.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+@media(max-width:900px){.dash-grid{grid-template-columns:1fr}}
+.dash-grid h4{font-size:13.5px;margin-bottom:8px}
+.seg{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.seg button{font-family:inherit;font-size:12.5px;font-weight:700;padding:8px 16px;border-radius:100px;border:1.5px solid var(--line);background:#fff;cursor:pointer}
+.seg button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+table.mini{font-size:12.5px}
+table.mini td,table.mini th{padding:8px}
+tr.clickable{cursor:pointer}
+.bar-row{display:flex;align-items:center;gap:10px;padding:7px 4px;cursor:pointer;border-radius:10px}
+.bar-row:hover{background:#F8FAFF}
+.bar-lb{flex:0 0 46%;font-size:12.5px;font-weight:600;text-align:right}
+.bar-lb small{color:var(--muted);font-weight:600}
+.bar-tr{flex:1;background:#F1F5F9;border-radius:100px;height:12px;overflow:hidden}
+.bar-tr i{display:block;height:100%;border-radius:100px;background:linear-gradient(90deg,var(--primary),var(--primary-2))}
+.bar-tr i.alt{background:linear-gradient(90deg,#0EA5E9,#6366F1)}
+.bar-tr i.alt2{background:linear-gradient(90deg,#F59E0B,#EF4444)}
+.p-on{background:#DCFCE7;color:#15803D}.p-off{background:#F1F5F9;color:#94A3B8}
+.uby{font-size:11px;color:var(--muted)}
+/* ===== لمسة عصرية + تجاوب الجوال ===== */
+:root{--tap:48px}
+html{-webkit-text-size-adjust:100%}
+body{background:radial-gradient(1200px 400px at 85% -5%,#EEF2FF 0%,transparent 60%),radial-gradient(900px 380px at 10% 0%,#F5F3FF 0%,transparent 55%),var(--bg)}
+.panel{box-shadow:0 12px 32px rgba(15,23,42,.07)}
+.btn,.tools button,.rbtn,.seg button{transition:transform .18s,box-shadow .18s}
+.btn:active,.tools button:active,.rbtn:active{transform:scale(.97)}
+.login-card{box-shadow:0 24px 60px rgba(79,70,229,.18);border-color:#C7D2FE}
+thead th{position:sticky;top:0}
+@media(max-width:640px){
+ .wrap{padding:0 12px 32px}
+ .nav-in{padding:10px 12px}
+ .brand b{font-size:14px}.brand span{font-size:11px}.logo{width:38px;height:38px}
+ .role-badge{font-size:11px;padding:6px 11px}
+ .head h1{font-size:19px}.head p{font-size:12.5px}
+ .kpis{grid-template-columns:repeat(2,1fr);gap:8px}
+ .kpi{padding:12px}.kpi .n{width:38px;height:38px;font-size:18px}.kpi b{font-size:19px}
+ .panel{padding:16px;border-radius:16px}
+ input.inp,select.inp,textarea.inp{font-size:16px;padding:13px 14px;min-height:var(--tap)}
+ .toolbar{display:grid;grid-template-columns:1fr 1fr}
+ .toolbar input{grid-column:1/-1}
+ .toolbar button{grid-column:1/-1}
+ .btn{min-height:var(--tap);font-size:15px}
+ .scope label{font-size:13.5px;padding:13px}
+ .perm-grid{grid-template-columns:1fr 1fr}
+ table.resp,table.resp thead,table.resp tbody,table.resp tr,table.resp td{display:block;width:100%}
+ table.resp thead{display:none}
+ table.resp tr{background:#fff;border:1.5px solid var(--line);border-radius:14px;margin-bottom:10px;padding:6px 4px;box-shadow:0 4px 12px rgba(15,23,42,.05)}
+ table.resp tr.top-row{background:var(--gold-bg)}
+ table.resp td{border:0;text-align:right!important;padding:8px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+ table.resp td::before{content:attr(data-h);font-size:11.5px;font-weight:700;color:var(--muted);flex-shrink:0}
+ table.resp .del{font-size:22px;padding:8px 12px}
+}
+#print-area{display:none}
+@media print{
+ body{background:#fff}
+ .nav,.wrap,.screen-only{display:none!important}
+ #print-area{display:block!important;padding:24px;color:#000}
+ #print-area h1{font-size:20px;text-align:center}
+ #print-area .meta{text-align:center;font-size:13px;color:#333;margin:6px 0 16px}
+ #print-area table{font-size:12px;margin-bottom:18px}
+ #print-area th{background:#eee!important;color:#000!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+ #print-area .sig{display:flex;justify-content:space-between;margin-top:34px;font-size:13px}
+}
+</style>
+</head>
+<body>
+<div class="nav screen-only"><div class="nav-in">
+<div class="brand"><div class="logo">◷</div><div><b>حصر التأخر الصباحي اليومي للطلاب</b><span>متوسطة حسان بن ثابت • تسجيل ومتابعة لحظية</span></div></div>
+<div class="rolebox">
+<span class="role-badge" id="role-badge">غير مسجل</span>
+<span class="role-badge" id="net-badge">💾 وضع محلي</span>
+<button class="rbtn" id="btn-out" style="display:none" onclick="logout()">خروج</button>
+<a class="back" href="index.html">→ البوابة</a>
+</div>
+</div></div>
+
+<div class="wrap screen-only">
+<!-- تسجيل الدخول -->
+<div class="panel login-card" id="login-panel">
+<h3>🔑 تسجيل الدخول</h3>
+<label class="flab">اسم المستخدم</label><input class="inp" id="li-user" autocomplete="username">
+<label class="flab">كلمة المرور</label><input class="inp" id="li-pass" type="password" placeholder="••••••" autocomplete="current-password">
+<button class="btn btn-p" onclick="login()">دخول</button>
+<p class="sub" style="margin-top:10px">نسيت بياناتك؟ تواصل مع أمين مصادر التعلم بالمدرسة لإعادة تعيينها.</p>
+<button class="btn t1" style="border:0;cursor:pointer;margin-top:8px" onclick="$('login-setup').click()">📥 استيراد ملف إعداد (يُرسل واتساب من الإدارة)</button>
+<input type="file" id="login-setup" accept=".json" style="display:none" onchange="importSetupFile(this)">
+</div>
+
+<div id="app" style="display:none">
+<div class="head">
+<div><h1>حصر التأخر الصباحي اليومي للطلاب</h1><p id="app-hint">اختر الصف ثم الفصل فتظهر أسماء طلابه فقط — والدقائق تُحسب تلقائياً من 7:15 صباحاً</p></div>
+<div><input class="inp" type="date" id="f-date" style="width:auto;min-width:170px;background:#fff"></div>
+</div>
+
+<div class="kpis">
+<div class="kpi"><div class="n" style="background:#EEF2FF">📊</div><div><b id="k-total">0</b><span>متأخر اليوم المحدد</span></div></div>
+<div class="kpi"><div class="n" style="background:#ECFDF5">🏫</div><div><b id="k-classes">0</b><span>فصول متأثرة</span></div></div>
+<div class="kpi"><div class="n" style="background:#FEF3C7">⚠️</div><div><b id="k-repeat">0</b><span>حالات متكررة (3+)</span></div></div>
+<div class="kpi"><div class="n" style="background:#EFF6FF">🥇</div><div><b id="k-top" style="font-size:15px">—</b><span>أكثر صف تأخراً</span></div></div>
+</div>
+
+<!-- لوحة الإدارة: الموظفون -->
+<div class="panel" id="users-panel" style="display:none;border-color:#C7D2FE">
+<h3>👥 إدارة الموظفين والصلاحيات (الإدارة فقط)</h3>
+<p class="sub">أنشئ حساباً لكل موظف إدخال وحدد صلاحياته والصفوف المسموحة له. الموظف يدخل باسمه وكلمته ولا يرى إلا ما سمحت له به.</p>
+<div class="row2">
+<div><label class="flab">اسم الموظف</label><input class="inp" id="u-name" placeholder="مثال: أ. محمد الشمري"></div>
+<div><label class="flab">اسم المستخدم</label><input class="inp" id="u-user" placeholder="مثال: m.shammari"></div>
+</div>
+<div class="row2">
+<div><label class="flab">كلمة المرور</label><input class="inp" id="u-pass" placeholder="كلمة مرور الموظف"></div>
+<div><label class="flab">الصفوف المسموحة</label>
+<div class="perm-grid" style="grid-template-columns:1fr">
+<label><input type="checkbox" id="ug-all" checked onchange="if(this.checked){ug1.checked=ug2.checked=ug3.checked=true;}"> كل الصفوف</label>
+</div>
+<div class="perm-grid" style="grid-template-columns:1fr 1fr 1fr;margin-top:0">
+<label><input type="checkbox" id="ug1" checked> الأول متوسط</label>
+<label><input type="checkbox" id="ug2" checked> الثاني متوسط</label>
+<label><input type="checkbox" id="ug3" checked> الثالث متوسط</label>
+</div>
+</div>
+</div>
+<label class="flab">الصلاحيات</label>
+<div class="perm-grid" id="u-perms">
+<label><input type="checkbox" data-p="add" checked> ➕ إدخال تسجيلات</label>
+<label><input type="checkbox" data-p="del"> 🗑 حذف تسجيل</label>
+<label><input type="checkbox" data-p="print" checked> 🖨 طباعة التقرير</label>
+<label><input type="checkbox" data-p="export"> 📥 تصدير CSV</label>
+<label><input type="checkbox" data-p="clear"> 🧹 مسح تسجيلات اليوم</label>
+<label><input type="checkbox" data-p="import"> 📤 استيراد الأسماء</label>
+</div>
+<button class="btn btn-p" onclick="addUser()">＋ إضافة الموظف</button>
+<button class="btn t1" style="border:0;cursor:pointer;margin-top:8px" onclick="downloadUsersFile()">📥 تنزيل ملف الحسابات (users-data.js) لتوزيعه مع نسخ الموظفين</button>
+<div style="overflow-x:auto;margin-top:14px"><table class="resp">
+<thead><tr><th>الموظف</th><th>المستخدم</th><th>الصلاحيات (اضغط للتبديل)</th><th>الصفوف</th><th>إجراءات</th></tr></thead>
+<tbody id="users-tb"></tbody></table></div>
+<div class="row2" style="margin-top:14px">
+<div><label class="flab">تغيير كلمة مرور الإدارة (admin)</label><input class="inp" id="ap-new" type="password" placeholder="كلمة جديدة"></div>
+<div><label class="flab"> </label><button class="btn t2" style="border:0;cursor:pointer" onclick="changeAdminPass()">حفظ كلمة الإدارة</button></div>
+</div>
+</div>
+
+<div class="panel" id="dash-admin" style="display:none;border-color:#C7D2FE">
+<h3>📊 لوحة تحكم الإدارة — متابعة حية وتفاعلية</h3>
+<p class="sub">اضغط على أي موظف أو فصل أو طالب لفلترة السجل به فوراً</p>
+<div class="seg" id="dperiod">
+<button data-p="day" class="on" onclick="setPeriod('day')">اليوم</button>
+<button data-p="week" onclick="setPeriod('week')">آخر 7 أيام</button>
+<button data-p="month" onclick="setPeriod('month')">آخر 30 يوماً</button>
+<button data-p="all" onclick="setPeriod('all')">الكل</button>
+</div>
+<div class="kpis" style="margin-top:12px">
+<div class="kpi"><div class="n" style="background:#EEF2FF">📊</div><div><b id="d-k-total">0</b><span>تسجيلات الفترة</span></div></div>
+<div class="kpi"><div class="n" style="background:#ECFDF5">🗓</div><div><b id="d-k-today">0</b><span>متأخر اليوم</span></div></div>
+<div class="kpi"><div class="n" style="background:#FFF7ED">👥</div><div><b id="d-k-staff" style="font-size:18px">0 / 0</b><span>مدخلون / مسجلون</span></div></div>
+<div class="kpi"><div class="n" style="background:#FEF3C7">⭐</div><div><b id="d-k-rep">0</b><span>طلاب متكررون (3+)</span></div></div>
+</div>
+<div class="dash-grid">
+<div><h4>👥 نشاط الموظفين (الفترة) — اضغط للفلترة</h4><div style="overflow-x:auto"><table class="mini resp"><thead><tr><th>الموظف</th><th>المدخلات</th><th>اليوم</th><th>آخر إدخال</th></tr></thead><tbody id="staff-tb"></tbody></table></div></div>
+<div><h4>🏫 التأخر حسب الفصول (الفترة)</h4><div id="cls-chart"></div></div>
+<div><h4>📚 حسب الصفوف (الفترة)</h4><div id="grd-chart"></div></div>
+<div><h4>⭐ الطلاب الأكثر تكراراً (الفترة)</h4><div id="dash-top-st"></div></div>
+</div>
+</div>
+
+<div class="panel" id="fb-panel" style="display:none;border-color:#C7D2FE">
+<h3>☁️ المزامنة السحابية — إعداد مرة واحدة <small style="color:#94A3B8">(v3)</small></h3>
+<p class="sub">الحالة: <b>شارة أعلى الصفحة (متصل سحابياً / وضع محلي)</b> — الإعدادات مضمّنة وتعمل تلقائياً، والصق هنا فقط إن أردت تجاوزها.</p>
+<label class="flab">إعدادات Firebase (JSON من Project settings ← Your apps)</label>
+<textarea id="fb-cfg" class="inp" rows="4" style="font-size:11px;direction:ltr;text-align:left"></textarea>
+<p class="sub" id="fb-status" style="font-weight:700;color:#B45309">لم يُختبر بعد — حدّث الصفحة وستظهر الحالة هنا تلقائياً.</p>
+<div class="tools"><button class="t1" onclick="saveFb()">💾 حفظ وتفعيل المزامنة</button><button class="t2" onclick="testFb()">🔌 اختبار الاتصال</button></div>
+<div class="tools"><button class="t1" onclick="exportSetup()">📤 تصدير ملف إعداد الموظفين</button><button class="t2" onclick="$('setup-file').click()">📥 استيراد ملف إعداد</button></div>
+<input type="file" id="setup-file" accept=".json" style="display:none" onchange="importSetupFile(this)">
+<p class="sub">ملف الإعداد يحمل: الاتصال + حسابات الموظفين + كلمة الإدارة — أرسله واتساب لكل موظف ليستورده مرة واحدة من شاشة الدخول.</p>
+</div>
+
+<div class="layout">
+<div>
+<div class="panel form-col" id="entry-panel">
+<h3>تسجيل تأخر جديد</h3>
+<p class="sub">الخطوات بالترتيب: 1) الصف 2) الفصل 3) اسم الطالب من قائمة فصله</p>
+<div id="day-claim" style="display:none;font-size:12.5px;font-weight:700;color:#92400E;background:#FEF3C7;border:1.5px solid #F59E0B;border-radius:11px;padding:9px 13px;margin-top:8px"></div>
+<div class="row2">
+<div><label class="flab">1) الصف *</label><select class="inp" id="f-grade" onchange="onGradeClass()"></select></div>
+<div><label class="flab">2) الفصل *</label><select class="inp" id="f-class" onchange="onGradeClass()"><option>1</option><option>2</option><option>3</option></select></div>
+</div>
+<label class="flab">3) اسم الطالب *</label><input class="inp" list="dl" id="f-name" placeholder="اختر من طلاب الفصل...">
+<datalist id="dl"></datalist>
+<div class="count-hint" id="cls-count">—</div>
+<div class="row2">
+<div><label class="flab">وقت الوصول</label><input class="inp" type="time" id="f-time" value="07:20" oninput="autoMins()"></div>
+<div><label class="flab">دقائق التأخير (تلقائي من 7:15)</label><input class="inp" type="number" id="f-mins" value="5" min="0"></div>
+</div>
+<label class="flab">السبب</label>
+<select class="inp" id="f-reason"><option>الاستيقاظ متأخراً</option><option>المواصلات</option><option>ظرف عائلي</option><option>مراجعة طبية</option><option>بدون عذر</option><option>أخرى</option></select>
+<label class="flab">الإجراء</label>
+<select class="inp" id="f-action"><option>تنبيه شفهي</option><option>تعهد خطي</option><option>استدعاء ولي الأمر</option><option>تحويل للإرشاد الطلابي</option></select>
+<button class="btn btn-p" id="btn-add" onclick="add()">✓ حفظ التسجيل</button>
+<div class="drop" id="import" style="display:none">
+<b>📤 استيراد أسماء الطلاب من Excel (حسب الصلاحية)</b>
+<p>ملف <b>.xlsx</b> بأعمدة: الاسم ، الصف ، الفصل</p>
+<input class="inp" type="file" id="file" accept=".xlsx,.xls,.csv">
+<p id="imp-st" style="margin-top:6px">✔ قاعدة المدرسة مدمجة وجاهزة.</p>
+<button class="t1" style="padding:8px 16px;border-radius:9px;margin-top:6px;border:0;cursor:pointer;font-family:inherit;font-weight:700" onclick="template()">تحميل القالب</button>
+</div>
+</div>
+
+<div class="panel">
+<h3>🖨 التقرير والطباعة</h3>
+<p class="sub">اختر النطاق ثم اطبع — التقرير يميز الأكثر تكراراً ⭐</p>
+<div class="scope" id="scope">
+<label class="sel"><input type="radio" name="sc" value="all" checked onchange="onScope()"> كامل المدرسة (كل الصفوف والفصول)</label>
+<label><input type="radio" name="sc" value="grade" onchange="onScope()"> صف محدد (جميع فصوله)</label>
+<label><input type="radio" name="sc" value="class" onchange="onScope()"> فصل محدد (صف + شعبة)</label>
+</div>
+<div class="row2">
+<div><label class="flab">الصف</label><select class="inp" id="r-grade"></select></div>
+<div><label class="flab">الفصل</label><select class="inp" id="r-class"><option>1</option><option>2</option><option>3</option></select></div>
+</div>
+<div class="tools">
+<button class="t2" id="btn-print" onclick="printReport()">🖨 معاينة وطباعة التقرير</button>
+<button class="t1" id="btn-exp" style="display:none" onclick="exp()">📥 تصدير CSV</button>
+</div>
+<div class="tools">
+<button class="t3" id="btn-clr" style="display:none" onclick="clr()">🗑 مسح تسجيلات اليوم</button>
+</div>
+<div class="tools">
+<button class="t1" id="btn-myrec" onclick="exportRecords()">📤 تصدير سجلاتي (إرسالها للإدارة)</button>
+<button class="t2" id="btn-merge" style="display:none" onclick="$('merge-file').click()">📥 دمج سجلات من ملف</button>
+</div>
+<input type="file" id="merge-file" accept=".json" style="display:none" onchange="mergeRecordsFile(this)">
+</div>
+</div>
+
+<div class="panel" id="dash-staff" style="display:none">
+<h3>⚡ لوحتك التفاعلية</h3>
+<p class="sub">الأعلى تأخراً في نطاق صفوفك — اضغط على أي اسم لفلترة السجل به</p>
+<div class="dash-grid">
+<div><h4>⭐ الطلاب الأكثر تأخراً (تراكمي)</h4><div id="staff-top-st"></div></div>
+<div><h4>🏫 الفصول الأكثر تأخراً (تراكمي)</h4><div id="staff-top-cls"></div></div>
+</div>
+</div>
+
+<div class="panel">
+<h3>سجل المتأخرين</h3>
+<p class="sub">الترتيب الذهبي ⭐ لصاحب أعلى تكرار — والشارة للمتكرر 3 مرات فأكثر</p>
+<div class="toolbar no-print">
+<input id="q" placeholder="بحث بالاسم..." oninput="render()">
+<select id="qg" onchange="render()"><option value="">كل الصفوف</option><option>الأول متوسط</option><option>الثاني متوسط</option><option>الثالث متوسط</option></select>
+<select id="qc" onchange="render()"><option value="">كل الفصول</option><option>1</option><option>2</option><option>3</option></select>
+<select id="qb" onchange="render()"><option value="">كل المدخلين</option></select>
+<button onclick="clearFilters()" style="flex:0 0 auto;border:1.5px solid var(--line);background:#fff;border-radius:11px;padding:10px 14px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer">مسح الفلاتر ✕</button>
+</div>
+<div style="overflow-x:auto"><table class="resp">
+<thead><tr><th>الطالب</th><th>الصف / الفصل</th><th>الوقت (الدقائق)</th><th>السبب</th><th>الإجراء</th><th>المدخل</th><th class="no-print" id="th-del">حذف</th></tr></thead>
+<tbody id="tb"></tbody></table>
+<div class="empty" id="em">لا توجد تسجيلات لهذا اليوم — ابدأ بإضافة أول طالب</div></div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="print-area"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="users-data.js"></script>
+<script src="students-data.js"></script>
+<script>
+const GRADES=['الأول متوسط','الثاني متوسط','الثالث متوسط'];
+const BASE_MIN=7*60+15;
+const LT='hasan_tardiness_v1', LS='hasan_students_v1', LU='hasan_users_v1', LA='hasan_admin_v1', LSESS='hasan_session_v1', LF='hasan_fb_v1';
+let CLOUD=false, db=null;
+window.addEventListener('error',e=>{const el=document.getElementById('fb-status');if(el)el.textContent='خطأ في الصفحة: '+(e.message||e.type);});
+const $=id=>document.getElementById(id);
+const DEFAULT_ADMIN='admin123';
+$('f-date').value=new Date().toISOString().slice(0,10);
+const load=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}};
+const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+if(typeof HASAN_STUDENTS!=='undefined'&&HASAN_STUDENTS.length){
+ try{
+  const cur=JSON.parse(localStorage.getItem(LS)||'[]');
+  if(!cur.length||cur.length!==HASAN_STUDENTS.length){localStorage.setItem(LS,JSON.stringify(HASAN_STUDENTS));}
+ }catch(e){localStorage.setItem(LS,JSON.stringify(HASAN_STUDENTS));}
+}
+// الحسابات المضمّنة في الملف (تعمل على أي نسخة بلا استيراد) — تُضاف للناقص فقط ولا تمس تعديلاتك المحلية
+if(typeof HASAN_USERS_BUILTIN!=='undefined'&&HASAN_USERS_BUILTIN.length){
+ try{
+  const cur=JSON.parse(localStorage.getItem(LU)||'[]');
+  const have=new Set(cur.map(u=>u.username));
+  let changed=false;
+  HASAN_USERS_BUILTIN.forEach(u=>{if(u&&u.username&&!have.has(u.username)){cur.push(u);changed=true;}});
+  if(changed)localStorage.setItem(LU,JSON.stringify(cur));
+ }catch(e){}
+}
+if(typeof HASAN_ADMIN_BUILTIN==='string'&&HASAN_ADMIN_BUILTIN&&!localStorage.getItem(LA)){localStorage.setItem(LA,JSON.stringify(HASAN_ADMIN_BUILTIN));}
+let R=load(LT,[]), St=load(LS,[]), Users=load(LU,[]);
+let adminPass=load(LA,DEFAULT_ADMIN);
+if(typeof adminPass!=='string')adminPass=DEFAULT_ADMIN;
+let sess=null; try{sess=JSON.parse(sessionStorage.getItem(LSESS)||'null');}catch(e){sess=null;}
+const PERMS=[['add','إدخال'],['del','حذف'],['print','طباعة'],['export','تصدير'],['clear','مسح اليوم'],['import','استيراد']];
+// ---------- الدخول ----------
+async function login(){
+ const u=$('li-user').value.trim(), p=$('li-pass').value;
+ if(!u||!p){alert('أدخل اسم المستخدم وكلمة المرور');return;}
+ if(u==='admin'){
+  let ap=adminPass;
+  if(cloud()){try{const s=await db.ref('hasan/v1/meta/adminPass').once('value');if(s.val()){ap=s.val();adminPass=ap;save(LA,ap);}}catch(e){}}
+  if(p!==ap){alert('بيانات الدخول غير صحيحة');return;}
+  sess={type:'admin',username:'admin',display:'إدارة المدرسة'};
+ }else{
+  let f=Users.find(x=>x.username===u&&x.pass===p);
+  if(!f&&cloud()){try{const s=await db.ref('hasan/v1/users/'+u).once('value');const v=s.val();if(v&&v.pass===p){f=v;Users.push(v);save(LU,Users);}}catch(e){}}
+  if(!f){alert('بيانات الدخول غير صحيحة');return;}
+  sess={type:'staff',username:f.username,display:f.display,perms:f.perms,grades:f.grades};
+ }
+ sessionStorage.setItem(LSESS,JSON.stringify(sess));
+ $('li-pass').value='';
+ enter();
+}
+function logout(){sess=null;sessionStorage.removeItem(LSESS);$('login-panel').style.display='';$('app').style.display='none';$('role-badge').textContent='غير مسجل';$('role-badge').classList.remove('admin');$('btn-out').style.display='none';}
+function isAdmin(){return sess&&sess.type==='admin';}
+function can(p){if(!sess)return false;if(isAdmin())return true;return !!(sess.perms&&sess.perms[p]);}
+function allowedGrades(){if(!sess)return [];if(isAdmin())return GRADES.slice();const g=(sess.grades||[]);return GRADES.filter(x=>g.includes(x));}
+function enter(){
+ if(!sess){return;}
+ $('login-panel').style.display='none';$('app').style.display='';
+ $('role-badge').textContent=(isAdmin()?'الإدارة: ':'موظف: ')+sess.display;
+ $('role-badge').classList.toggle('admin',isAdmin());
+ $('btn-out').style.display='';
+ // تقييد الصفوف
+ const ag=allowedGrades();
+ const keepG=$('f-grade').value, keepR=$('r-grade').value;
+ $('f-grade').innerHTML=ag.map(g=>`<option>${g}</option>`).join('');
+ $('r-grade').innerHTML=ag.map(g=>`<option>${g}</option>`).join('');
+ if(ag.includes(keepG))$('f-grade').value=keepG;
+ if(ag.includes(keepR))$('r-grade').value=keepR;
+ // الصلاحيات
+ $('users-panel').style.display=isAdmin()?'':'none';
+ $('entry-panel').style.display=can('add')?'':'none';
+ $('import').style.display=can('import')?'':'none';
+ $('btn-exp').style.display=can('export')?'':'none';
+ $('btn-merge').style.display=(isAdmin()||can('import'))?'':'none';
+ $('btn-clr').style.display=can('clear')?'':'none';
+ $('btn-print').style.display=can('print')?'':'none';
+ $('th-del').style.display=can('del')?'':'none';
+ if(isAdmin())renderUsers();
+ $('dash-admin').style.display=isAdmin()?'':'none';
+ $('dash-staff').style.display=isAdmin()?'none':'';
+ $('fb-panel').style.display=isAdmin()?'':'none';
+ if(isAdmin()){const c=fbCfg(),ta=$('fb-cfg');if(c&&ta&&!ta.value)ta.value=JSON.stringify(c);}
+ autoMins();onGradeClass();onScope();netBadge();render();
+}
+// ---------- إدارة الموظفين (إدارة) ----------
+function addUser(){
+ if(!isAdmin())return;
+ const dn=$('u-name').value.trim(), un=$('u-user').value.trim(), pw=$('u-pass').value;
+ if(!dn||!un||!pw){alert('أكمل اسم الموظف واسم المستخدم وكلمة المرور');return;}
+ if(un==='admin'||Users.some(x=>x.username===un)){alert('اسم المستخدم موجود مسبقاً');return;}
+ if(/[.#$\[\]\/]/.test(un)){alert('اسم المستخدم لا يقبل الرموز ( . # $ [ ] / )');return;}
+ const perms={};document.querySelectorAll('#u-perms input[data-p]').forEach(c=>perms[c.dataset.p]=c.checked);
+ let grades=[];if($('ug-all').checked)grades=GRADES.slice();
+ else{if($('ug1').checked)grades.push(GRADES[0]);if($('ug2').checked)grades.push(GRADES[1]);if($('ug3').checked)grades.push(GRADES[2]);}
+ if(!grades.length){alert('حدد صفاً واحداً على الأقل');return;}
+ Users.push({display:dn,username:un,pass:pw,perms,grades});
+ save(LU,Users);wUser(Users[Users.length-1]);$('u-name').value='';$('u-user').value='';$('u-pass').value='';
+ renderUsers();alert('تمت إضافة '+dn+' ✔');
+}
+function downloadUsersFile(){
+ if(!isAdmin())return;
+ const js='// ملف الحسابات المضمّن — ولّدته الإدارة بتاريخ '+new Date().toLocaleString('ar-SA')+'\n// ضعه بجانب tardiness.html في نسخ الموظفين للدخول المباشر بيوزر/كلمة بلا استيراد\nconst HASAN_USERS_BUILTIN = '+JSON.stringify(Users)+';\nconst HASAN_ADMIN_BUILTIN = '+JSON.stringify(adminPass)+';\n';
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(new Blob([js],{type:'text/javascript;charset=utf-8'}));
+ a.download='users-data.js';a.click();
+ alert('تم تنزيل users-data.js ✔ ضعه بجانب بقية الملفات في نسخ الموظفين');
+}
+function renderUsers(){
+ $('users-tb').innerHTML=Users.map((u,i)=>{
+  const pb=PERMS.map(([k,lb])=>`<button class="pbadge ${u.perms[k]?'p-on':'p-off'}" onclick="togglePerm(${i},'${k}')" title="${lb}">${u.perms[k]?'✔ ':'✖ '}${lb}</button>`).join(' ');
+  return `<tr><td data-h="الموظف"><b>${u.display}</b></td><td data-h="المستخدم">${u.username}</td><td data-h="الصلاحيات" style="white-space:normal;line-height:2">${pb}</td>
+  <td data-h="الصفوف"><small>${u.grades.join('، ')}</small></td>
+  <td data-h="إجراءات" class="no-print"><button class="pbadge p-off" onclick="resetPass(${i})">🔑 تصفير</button>
+  <button class="pbadge" style="background:#FEE2E2;color:#B91C1C" onclick="delUser(${i})">حذف</button></td></tr>`;
+ }).join('')||'<tr><td colspan="5" style="color:#94A3B8">لا يوجد موظفون بعد — أضف أول موظف من الأعلى</td></tr>';
+}
+function togglePerm(i,k){if(!isAdmin())return;Users[i].perms[k]=!Users[i].perms[k];save(LU,Users);wUser(Users[i]);renderUsers();}
+function delUser(i){if(!isAdmin())return;if(!confirm('حذف حساب '+Users[i].display+' ؟'))return;const un=Users[i].username;Users.splice(i,1);save(LU,Users);dUser(un);renderUsers();}
+function resetPass(i){if(!isAdmin())return;const p=prompt('كلمة مرور جديدة لـ '+Users[i].display+':');if(!p)return;Users[i].pass=p;save(LU,Users);wUser(Users[i]);alert('تم التصفير ✔');}
+function changeAdminPass(){if(!isAdmin())return;const p=$('ap-new').value;if(!p||p.length<4){alert('كلمة قصيرة — 4 أحرف على الأقل');return;}adminPass=p;save(LA,p);wMeta();$('ap-new').value='';alert('تم حفظ كلمة الإدارة ✔');}
+// ---------- الدقائق التلقائية ----------
+function toMin(t){if(!t||t.indexOf(':')<0)return null;const[a,b]=t.split(':').map(Number);return a*60+b;}
+function autoMins(){const m=toMin($('f-time').value);if(m===null)return;$('f-mins').value=Math.max(0,m-BASE_MIN);}
+// ---------- فلترة الأسماء ----------
+function classStudents(){return St.filter(s=>s.grade===$('f-grade').value&&String(s.cls)===String($('f-class').value));}
+function onGradeClass(){
+ const list=classStudents();
+ $('dl').innerHTML=list.map(s=>`<option value="${s.name}">`).join('');
+ $('cls-count').textContent=`طلاب ${$('f-grade').value} — فصل ${$('f-class').value}: ${list.length} طالباً — اختر الاسم من القائمة`;
+ if($('f-name').value&&!list.some(s=>s.name.trim()===$('f-name').value.trim()))$('f-name').value='';
+}
+function add(){
+ if(!can('add')){alert('لا تملك صلاحية الإدخال');return;}
+ const claim=dayClaim();
+ if(claim.length&&!isAdmin()){
+  if(!confirm('⚠️ تم إدخال التأخر لهذا اليوم من قبل الموظف: '+claim.map(c=>c[0]).join('، ')+'\nهل تريد الإضافة على أي حال؟'))return;
+ }
+ const n=$('f-name').value.trim();
+ if(!n){alert('اختر اسم الطالب من قائمة فصله');return;}
+ const ok=classStudents().some(s=>s.name.trim()===n);
+ if(!ok&&!confirm('هذا الاسم ليس من طلاب الفصل المحدد. حفظه على أي حال؟'))return;
+ R.unshift({id:Date.now(),name:n,grade:$('f-grade').value,cls:$('f-class').value,date:$('f-date').value,time:$('f-time').value,mins:Number($('f-mins').value||0),reason:$('f-reason').value,action:$('f-action').value,by:sess?sess.display:'—'});
+ save(LT,R);wRec(R[0]);$('f-name').value='';render();
+}
+function del(id){if(!can('del')){alert('الحذف خاص بمن لديه الصلاحية');return;}if(confirm('حذف هذا التسجيل؟')){dRec(id);R=R.filter(r=>r.id!==id);save(LT,R);render();}}
+function clr(){if(!can('clear')){alert('مسح اليوم خاص بمن لديه الصلاحية');return;}const d=$('f-date').value;if(!confirm('مسح كل تسجيلات تاريخ '+d+' ؟'))return;const ids=R.filter(r=>r.date===d).map(r=>r.id);R=R.filter(r=>r.date!==d);save(LT,R);ids.forEach(dRec);render();}
+const cnt=n=>R.filter(r=>r.name===n).length;
+function dayClaim(){
+ const d=$('f-date').value, me=sess?sess.display:'';
+ const s={};
+ R.filter(r=>r.date===d).forEach(r=>{const b=(r.by||'').trim();if(b&&b!=='—'&&b!==me)s[b]=(s[b]||0)+1;});
+ return Object.entries(s);
+}
+function updateClaim(){
+ const el=$('day-claim');if(!el)return;
+ const d=$('f-date').value;
+ const today=R.filter(r=>r.date===d);
+ const c=dayClaim();
+ el.style.display='';
+ if(!today.length){
+  el.style.background='#EFF6FF';el.style.borderColor='#93C5FD';el.style.color='#1D4ED8';
+  el.innerHTML='ℹ️ لم يتم إدخال التأخر لهذا اليوم بعد — بادر بالتسجيل.';
+ }else if(c.length){
+  el.style.background='#FEF3C7';el.style.borderColor='#F59E0B';el.style.color='#92400E';
+  el.innerHTML='⚠️ تم إدخال التأخر لهذا اليوم من قبل الموظف: <b>'+c.map(x=>x[0]+' ('+x[1]+' تسجيلات)').join('، ')+'</b>';
+ }else{
+  el.style.background='#ECFDF5';el.style.borderColor='#6EE7B7';el.style.color='#047857';
+  el.innerHTML='✔ أنت من أدخل تأخر هذا اليوم ('+today.length+' تسجيلات).';
+ }
+}
+function render(){
+ if(!sess)return;
+ const q=$('q').value.trim(), g=$('qg').value, c=$('qc').value, d=$('f-date').value, b=$('qb')?$('qb').value:'';
+ const ag=allowedGrades();
+ let rows=R.filter(r=>r.date===d&&ag.includes(r.grade)&&(!q||r.name.includes(q))&&(!g||r.grade===g)&&(!c||String(r.cls)===String(c))&&(!b||(r.by||'غير موثق')===b));
+ const maxRep=rows.length?Math.max(...rows.map(r=>cnt(r.name))):0;
+ $('tb').innerHTML=rows.map(r=>{
+  const n=cnt(r.name), top=n>=3&&n===maxRep;
+  return `<tr class="${top?'top-row':''}"><td data-h="الطالب" style="text-align:right">${top?'⭐ ':''}<b>${r.name}</b> ${n>=3?`<span class="pill rep">متكرر ${n}×</span>`:''}<br><span class="mins">${r.date}</span></td>
+  <td data-h="الصف / الفصل">${r.grade}<br><span class="pill c">فصل ${r.cls}</span></td>
+  <td data-h="الوقت" style="font-weight:700">${r.time||'—'}<br><span class="mins">${r.mins||0} د</span></td><td data-h="السبب">${r.reason}</td><td data-h="الإجراء">${r.action}</td>
+  <td data-h="المدخل" class="uby">${r.by||'—'}</td>
+  ${can('del')?`<td data-h="حذف" class="no-print"><button class="del" onclick="del(${r.id})">🗑</button></td>`:''}</tr>`}).join('');
+ $('em').style.display=rows.length?'none':'block';
+ $('k-total').textContent=rows.length;
+ $('k-classes').textContent=new Set(rows.map(r=>r.grade+'-'+r.cls)).size;
+ const all={};R.forEach(r=>all[r.name]=(all[r.name]||0)+1);
+ $('k-repeat').textContent=Object.values(all).filter(v=>v>=3).length;
+ const gg={};rows.forEach(r=>gg[r.grade]=(gg[r.grade]||0)+1);
+ const top=Object.entries(gg).sort((a,b)=>b[1]-a[1])[0];
+ $('k-top').textContent=top?top[0]:'—';
+ renderDash();updateClaim();
+}
+$('f-date').addEventListener('change',render);
+$('li-pass').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
+function onScope(){
+ document.querySelectorAll('#scope label').forEach(l=>l.classList.toggle('sel',l.querySelector('input').checked));
+ const sc=document.querySelector('input[name=sc]:checked').value;
+ // كامل المدرسة: تعطيل القائمتين | صف محدد: الصف فقط | فصل محدد: الصف + الشعبة
+ $('r-grade').disabled=(sc==='all');
+ $('r-class').disabled=(sc!=='class');
+}
+function scopeFilter(){
+ const sc=document.querySelector('input[name=sc]:checked').value;
+ const g=$('r-grade').value, c=$('r-class').value, ag=allowedGrades();
+ let rows=R.filter(r=>r.date===$('f-date').value&&ag.includes(r.grade));
+ let title='كامل المدرسة — كل الصفوف والفصول';
+ if(sc==='grade'){rows=rows.filter(r=>r.grade===g);title=`الصف: ${g} (جميع الفصول 1-3)`;}
+ if(sc==='class'){rows=rows.filter(r=>r.grade===g&&String(r.cls)===String(c));title=`الصف: ${g} — فصل ${c}`;}
+ return {rows,title};
+}
+function printReport(){
+ if(!can('print')){alert('لا تملك صلاحية الطباعة');return;}
+ const {rows,title}=scopeFilter();
+ const d=$('f-date').value;
+ const all={};R.forEach(r=>{const k=r.name+'|'+r.grade+'|'+r.cls;all[k]=(all[k]||0)+1;});
+ const inScopeNames=new Set(rows.map(r=>r.name));
+ const topSt=Object.entries(all).filter(([k])=>inScopeNames.has(k.split('|')[0]))
+  .map(([k,v])=>{const[nm,gr,cl]=k.split('|');return{nm,gr,cl,v};}).sort((a,b)=>b.v-a.v).slice(0,7);
+ const maxV=topSt.length?topSt[0].v:0;
+ const byCls={};rows.forEach(r=>{const k=r.grade+' — فصل '+r.cls;byCls[k]=(byCls[k]||0)+1;});
+ const clsArr=Object.entries(byCls).sort((a,b)=>b[1]-a[1]);
+ const maxC=clsArr.length?clsArr[0][1]:0;
+ $('print-area').innerHTML=`
+  <h1>تقرير حصر التأخر الصباحي — متوسطة حسان بن ثابت</h1>
+  <div class="meta">التاريخ: ${d} &nbsp;|&nbsp; النطاق: ${title} &nbsp;|&nbsp; إجمالي المتأخرين: ${rows.length} &nbsp;|&nbsp; أُعد بواسطة: ${sess.display}</div>
+  <h3>أولاً: كشف المتأخرين (${rows.length})</h3>
+  <table border="1" cellspacing="0" cellpadding="6" width="100%">
+  <tr><th>م</th><th>الاسم</th><th>الصف / الفصل</th><th>الوقت</th><th>الدقائق</th><th>السبب</th><th>الإجراء</th><th>التكرار التراكمي</th></tr>
+  ${rows.map((r,i)=>`<tr><td>${i+1}</td><td>${r.name}</td><td>${r.grade} / ${r.cls}</td><td>${r.time||'—'}</td><td>${r.mins||0}</td><td>${r.reason}</td><td>${r.action}</td><td>${cnt(r.name)}${cnt(r.name)>=3?' ⭐':''}</td></tr>`).join('')||'<tr><td colspan="8">لا توجد تسجيلات لهذا النطاق والتاريخ</td></tr>'}
+  </table>
+  <h3>ثانياً: الطلاب الأكثر تكراراً للتأخر ⭐ (تراكمي)</h3>
+  <table border="1" cellspacing="0" cellpadding="6" width="100%">
+  <tr><th>الطالب</th><th>الفصل</th><th>مرات التأخر</th><th>ملاحظة</th></tr>
+  ${topSt.map(s=>`<tr><td>${s.nm}</td><td>${s.gr} / ${s.cl}</td><td><b>${s.v}</b></td><td>${s.v>=3&&s.v===maxV?'⭐ الأعلى تكراراً':s.v>=3?'متكرر':''}</td></tr>`).join('')||'<tr><td colspan="4">لا يوجد تكرار بعد</td></tr>'}
+  </table>
+  <h3>ثالثاً: الفصول الأكثر تكراراً للتأخر</h3>
+  <table border="1" cellspacing="0" cellpadding="6" width="100%">
+  <tr><th>الفصل</th><th>عدد المتأخرين (اليوم)</th><th>ملاحظة</th></tr>
+  ${clsArr.map(([k,v])=>`<tr><td>${k}</td><td><b>${v}</b></td><td>${v===maxC?'⭐ الأعلى اليوم':''}</td></tr>`).join('')||'<tr><td colspan="3">—</td></tr>'}
+  </table>
+  <div class="sig"><span>الموظف المناوب: ....................</span><span>إدارة المدرسة: ....................</span><span>التوقيع: ............</span></div>`;
+ window.print();
+}
+const fileEl=$('file');
+if(fileEl)fileEl.addEventListener('change',e=>{
+ const f=e.target.files[0];if(!f)return;
+ const rd=new FileReader();
+ rd.onload=ev=>{
+  try{
+   const wb=XLSX.read(ev.target.result,{type:'array'});
+   const js=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
+   St=js.map(r=>({name:String(r['الاسم']||r['اسم الطالب']||r['name']||'').trim(),grade:String(r['الصف']||'').trim(),cls:String(r['الفصل']||'').trim()})).filter(s=>s.name);
+   save(LS,St);wStudents();onGradeClass();render();alert('تم استيراد '+St.length+' طالباً ✔');
+  }catch(err){alert('تعذر قراءة الملف');}
+ };
+ rd.readAsArrayBuffer(f);
+});
+function exp(){
+ if(!can('export')){alert('التصدير خاص بمن لديه الصلاحية');return;}
+ if(!R.length){alert('لا توجد بيانات');return;}
+ const h=['الاسم','الصف','الفصل','التاريخ','الوقت','الدقائق','السبب','الإجراء','المدخل'];
+ const l=R.map(r=>[r.name,r.grade,r.cls,r.date,r.time,r.mins,r.reason,r.action,r.by||''].map(v=>`"${String(v??'').replace(/"/g,'""')}"`).join(','));
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(["\ufeff"+h.join(',')+'\n'+l.join('\n')],{type:'text/csv'}));a.download='تقرير_التأخر.csv';a.click();
+}
+function exportRecords(){
+ if(!sess){return;}
+ const mine=R.filter(r=>(r.by||'')===sess.display);
+ if(!mine.length){alert('لا توجد تسجيلات باسمك لتصديرها');return;}
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(new Blob([JSON.stringify({app:'hasan-records',by:sess.display,at:new Date().toISOString(),records:mine})],{type:'application/json'}));
+ a.download='سجلات-'+sess.display+'.json';a.click();
+}
+function mergeRecordsFile(inp){
+ const f=inp.files[0];if(!f)return;
+ const rd=new FileReader();
+ rd.onload=ev=>{
+  try{
+   const d=JSON.parse(ev.target.result);
+   const list=d.records||d;
+   if(!Array.isArray(list))throw 0;
+   const have=new Set(R.map(r=>r.id));
+   let add=0,skip=0;
+   list.forEach(r=>{if(!r||!r.id||have.has(r.id)){skip++;}else{R.push(r);have.add(r.id);add++;}});
+   R.sort((a,b)=>b.id-a.id);
+   save(LT,R);render();
+   alert('تم الدمج ✔ أُضيف '+add+' وتُجاهل المكرر '+skip);
+  }catch(e){alert('ملف غير صالح');}
+  inp.value='';
+ };
+ rd.readAsText(f);
+}
+function template(){
+ const wb=XLSX.utils.book_new();
+ const ws=XLSX.utils.aoa_to_sheet([['الاسم','الصف','الفصل'],['اسم الطالب','الأول متوسط','1'],['اسم الطالب','الثاني متوسط','2']]);
+ XLSX.utils.book_append_sheet(wb,ws,'الطلاب');XLSX.writeFile(wb,'قالب_الطلاب.xlsx');
+}
+// ---------- المزامنة السحابية (Firebase المجاني) ----------
+// إعدادات Firebase مضمّنة — تعمل على كل نسخة وأي جهاز بلا أي استيراد (إعدادات اللوحة المحفوظة تتقدم عليها إن وجدت)
+const FIREBASE_BUILTIN = {
+  apiKey: "AIzaSyBrVIt8t0NW61p7W-IWcvb9XeH8PQQ3YZQ",
+  authDomain: "hasan-gate.firebaseapp.com",
+  databaseURL: "https://hasan-gate-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "hasan-gate",
+  storageBucket: "hasan-gate.firebasestorage.app",
+  messagingSenderId: "221208354717",
+  appId: "1:221208354717:web:8f9eb72cbbffed24689974"
+};
+function fbCfg(){try{const s=JSON.parse(localStorage.getItem(LF)||'null');if(s&&s.apiKey&&s.databaseURL)return s;}catch(e){}return FIREBASE_BUILTIN;}
+function netBadge(){
+ const b=$('net-badge');if(!b)return;
+ if(CLOUD){b.textContent='☁️ متصل سحابياً';b.style.background='#DCFCE7';b.style.color='#15803D';}
+ else{b.textContent='💾 وضع محلي';b.style.background='#F1F5F9';b.style.color='#475569';}
+}
+function cloud(){return CLOUD&&db;}
+function fbStatus(t){const e=$('fb-status');if(e)e.textContent=t;}
+function withTimeout(p,ms,msg){return Promise.race([p,new Promise((_,rej)=>setTimeout(()=>rej(new Error(msg)),ms))]);}
+async function fbBoot(){
+ netBadge();
+ const cfg=fbCfg();
+ if(!cfg||!cfg.apiKey||!cfg.databaseURL){fbStatus('لا توجد إعدادات اتصال.');return;}
+ if(typeof firebase==='undefined'){fbStatus('تعذر تحميل مكتبة Firebase — تحقق من الإنترنت ثم حدّث الصفحة (Ctrl+F5).');return;}
+ try{
+  if(!firebase.apps.length)firebase.initializeApp(cfg);
+  db=firebase.database();
+  await withTimeout(firebase.auth().signInAnonymously(),20000,'تعليق عند تسجيل الدخول المجهول: تأكد من تفعيل Anonymous في Authentication ثم احفظ');
+  await withTimeout(fbFirstSync(),30000,'تعليق عند المزامنة: تحقق من عنوان القاعدة (databaseURL) وقواعد Rules');
+  fbListen();
+  CLOUD=true;fbStatus('متصل سحابياً ✔');
+ }catch(e){CLOUD=false;db=null;fbStatus('فشل الاتصال: '+((e&&e.message)?e.message:e));}
+ netBadge();
+}
+async function fbFirstSync(){
+ try{
+  const rs=await db.ref('hasan/v1/records').once('value');const cv=rs.val()||{};
+  R.forEach(r=>{if(!cv[r.id])db.ref('hasan/v1/records/'+r.id).set(r);});
+  const us=await db.ref('hasan/v1/users').once('value');const uv=us.val()||{};
+  Users.forEach(u=>{if(!uv[u.username])db.ref('hasan/v1/users/'+u.username).set(u);});
+  const ms=await db.ref('hasan/v1/meta').once('value');const mv=ms.val()||{};
+  if(mv.adminPass){adminPass=mv.adminPass;save(LA,mv.adminPass);}
+  else if(adminPass)db.ref('hasan/v1/meta/adminPass').set(adminPass);
+  const ss=await db.ref('hasan/v1/students').once('value');
+  if(ss.val()&&ss.val().list&&ss.val().list.length){St=ss.val().list;save(LS,St);}
+  else if(St.length)db.ref('hasan/v1/students').set({version:Date.now(),list:St});
+ }catch(e){}
+}
+function fbListen(){
+ const base=db.ref('hasan/v1');
+ base.child('records').on('value',s=>{
+  const v=s.val()||{};R=Object.values(v).sort((a,b)=>b.id-a.id);save(LT,R);render();
+ });
+ base.child('users').on('value',s=>{
+  const v=s.val()||{};Users=Object.values(v);save(LU,Users);if(isAdmin())renderUsers();
+ });
+ base.child('students').on('value',s=>{
+  const v=s.val();
+  if(v&&v.list&&v.list.length&&v.list.length!==St.length){St=v.list;save(LS,St);onGradeClass();}
+ });
+ base.child('meta').on('value',s=>{
+  const v=s.val()||{};if(v.adminPass&&v.adminPass!==adminPass){adminPass=v.adminPass;save(LA,v.adminPass);}
+ });
+}
+function wRec(r){if(cloud())db.ref('hasan/v1/records/'+r.id).set(r);}
+function dRec(id){if(cloud())db.ref('hasan/v1/records/'+id).remove();}
+function wUser(u){if(cloud())db.ref('hasan/v1/users/'+u.username).set(u);}
+function dUser(un){if(cloud())db.ref('hasan/v1/users/'+un).remove();}
+function wMeta(){if(cloud())db.ref('hasan/v1/meta/adminPass').set(adminPass);}
+function wStudents(){if(cloud())db.ref('hasan/v1/students').set({version:Date.now(),list:St});}
+async function saveFb(){
+ let cfg;try{cfg=JSON.parse($('fb-cfg').value);}catch(e){alert('الصق إعدادات JSON صحيحة');return;}
+ if(!cfg.apiKey||!cfg.databaseURL){alert('الإعدادات ناقصة (apiKey و databaseURL)');return;}
+ save(LF,cfg);CLOUD=false;db=null;
+ await fbBoot();
+ alert(CLOUD?'تم التفعيل والمزامنة ✔':'تعذر الاتصال — تحقق من الإعدادات وقواعد القاعدة');
+ if(sess)enter();
+}
+async function testFb(){
+ fbStatus('جارٍ الاختبار...');
+ const cfg=fbCfg();if(!cfg){fbStatus('لا توجد إعدادات.');alert('احفظ الإعدادات أولاً');return;}
+ try{
+  if(typeof firebase==='undefined')throw new Error('تعذر تحميل مكتبة Firebase (تحقق من الإنترنت)');
+  fbStatus('1/4 تهيئة التطبيق...');
+  if(!firebase.apps.length)firebase.initializeApp(cfg);
+  const tdb=firebase.database();
+  fbStatus('2/4 تسجيل الدخول المجهول...');
+  await withTimeout(firebase.auth().signInAnonymously(),20000,'تعليق عند الدخول المجهول — تأكد من تفعيل Anonymous ثم احفظه');
+  fbStatus('3/4 كتابة تجريبية...');
+  await withTimeout(tdb.ref('hasan/v1/meta/ping').set(Date.now()),20000,'تعليق عند الكتابة — راجع عنوان القاعدة وقواعد Rules');
+  fbStatus('4/4 قراءة تجريبية...');
+  const s=await withTimeout(tdb.ref('hasan/v1/meta/ping').once('value'),20000,'تعليق عند القراءة');
+  fbStatus(s.val()?'الاتصال يعمل ✔':'فشل الاختبار — راجع القواعد');
+  alert(s.val()?'الاتصال يعمل ✔':'فشل الاختبار — راجع القواعد (Rules)');
+ }catch(e){fbStatus('فشل الاتصال: '+e.message);alert('فشل الاتصال: '+e.message);}
+}
+function exportSetup(){
+ const data={app:'hasan-gate-setup',at:new Date().toISOString(),fb:fbCfg(),users:Users,adminPass};
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:'application/json'}));
+ a.download='hasan-setup.json';a.click();
+}
+function importSetupFile(inp){
+ const f=inp.files[0];if(!f)return;
+ const rd=new FileReader();
+ rd.onload=async ev=>{
+  try{
+   const d=JSON.parse(ev.target.result);
+   if(d.fb)save(LF,d.fb);
+   if(d.users&&d.users.length){Users=d.users;save(LU,Users);}
+   if(d.adminPass){adminPass=d.adminPass;save(LA,d.adminPass);}
+   CLOUD=false;db=null;await fbBoot();netBadge();
+   alert('تم استيراد الإعداد ✔ '+(CLOUD?'ومتصل سحابياً':'وضع محلي'));
+   if(sess)enter();
+  }catch(e){alert('ملف غير صالح');}
+  inp.value='';
+ };
+ rd.readAsText(f);
+}
+// ---------- لوحات المتابعة التفاعلية ----------
+let dashPeriod='day';
+function setPeriod(p){dashPeriod=p;document.querySelectorAll('#dperiod button').forEach(x=>x.classList.toggle('on',x.dataset.p===p));renderDash();}
+function refDate(){return $('f-date').value;}
+function dateAdd(iso,n){const d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10);}
+function inPeriod(ds){
+ const ref=refDate();if(!ref)return true;
+ if(dashPeriod==='day')return ds===ref;
+ if(dashPeriod==='week')return ds>=dateAdd(ref,-6)&&ds<=ref;
+ if(dashPeriod==='month')return ds>=dateAdd(ref,-29)&&ds<=ref;
+ return true;
+}
+function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function jsq(s){return String(s??'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
+function fillBy(){
+ const sel=$('qb');if(!sel)return;
+ const cur=sel.value;
+ let names=[...new Set(R.map(r=>r.by||'غير موثق'))];
+ if(!isAdmin()&&sess)names=names.filter(n=>n===sess.display);
+ sel.innerHTML='<option value="">كل المدخلين</option>'+names.map(n=>`<option>${esc(n)}</option>`).join('');
+ if(names.includes(cur))sel.value=cur;
+}
+function barRow(label,sub,pct,cls,fn){
+ return `<div class="bar-row" onclick="${fn}" title="اضغط لفلترة السجل"><span class="bar-lb">${label} <small>${sub}</small></span><span class="bar-tr"><i class="${cls||''}" style="width:${pct}%"></i></span></div>`;
+}
+function renderDash(){
+ if(!sess)return;
+ fillBy();
+ const ag=allowedGrades();
+ const scoped=R.filter(r=>ag.includes(r.grade));
+ // لوحة الموظف المصغرة (تراكمي ضمن صفوفه)
+ const sc={};scoped.forEach(r=>{const k=r.name+'|'+r.grade+'|'+r.cls;sc[k]=(sc[k]||0)+1;});
+ const topS=Object.entries(sc).map(([k,v])=>{const p=k.split('|');return{nm:p[0],g:p[1],c:p[2],v};}).sort((a,b)=>b.v-a.v).slice(0,5);
+ const mS=topS.length?topS[0].v:1;
+ const stEl=$('staff-top-st');
+ if(stEl)stEl.innerHTML=topS.map(s=>barRow((s.v>=3?'⭐ ':'')+esc(s.nm),`${esc(s.g)} / ${s.c} • ${s.v}×`,Math.round(s.v/mS*100),'',`fltName('${jsq(s.nm)}')`)).join('')||'<p class="sub">لا بيانات بعد</p>';
+ const cc={};scoped.forEach(r=>{const k=r.grade+' — فصل '+r.cls;cc[k]=(cc[k]||0)+1;});
+ const topC=Object.entries(cc).sort((a,b)=>b[1]-a[1]).slice(0,5);
+ const mC=topC.length?topC[0][1]:1;
+ const clEl=$('staff-top-cls');
+ if(clEl)clEl.innerHTML=topC.map(([k,v],i)=>barRow((i===0?'⭐ ':'')+esc(k),v+' متأخر',Math.round(v/mC*100),'alt','')).join('')||'<p class="sub">لا بيانات بعد</p>';
+ if(!isAdmin())return;
+ // لوحة الإدارة الكاملة (حسب الفترة)
+ const rows=R.filter(inPeriod);
+ $('d-k-total').textContent=rows.length;
+ const today=refDate();
+ $('d-k-today').textContent=R.filter(r=>r.date===today).length;
+ const staffNames=Users.map(u=>u.display);
+ $('d-k-staff').textContent=new Set(rows.map(r=>r.by||'غير موثق')).size+' / '+staffNames.length;
+ const all={};R.forEach(r=>all[r.name]=(all[r.name]||0)+1);
+ $('d-k-rep').textContent=Object.values(all).filter(v=>v>=3).length;
+ const per={};
+ rows.forEach(r=>{const k=r.by||'غير موثق';per[k]=per[k]||{t:0,today:0,last:''};per[k].t++;if(r.date===today)per[k].today++;const stamp=r.date+' '+(r.time||'');if(stamp>per[k].last)per[k].last=stamp;});
+ const names=[...new Set([...staffNames,...Object.keys(per)])];
+ $('staff-tb').innerHTML=names.map(n=>{const p=per[n]||{t:0,today:0,last:'—'};return `<tr class="clickable" onclick="fltBy('${jsq(n)}')" title="اضغط لعرض مدخلاته"><td data-h="الموظف"><b>${esc(n)}</b></td><td data-h="المدخلات">${p.t}</td><td data-h="اليوم">${p.today}</td><td data-h="آخر إدخال"><small>${esc(p.last||'—')}</small></td></tr>`;}).join('')||'<tr><td colspan="4">—</td></tr>';
+ const bc={};rows.forEach(r=>{const k=r.grade+'|'+r.cls;bc[k]=(bc[k]||0)+1;});
+ const order=[];GRADES.forEach(g=>['1','2','3'].forEach(c=>{const k=g+'|'+c;if(bc[k])order.push([k,bc[k]]);}));
+ const mB=order.length?Math.max(...order.map(x=>x[1])):1;
+ $('cls-chart').innerHTML=order.map(([k,v])=>{const p=k.split('|');return barRow(`${p[0]} — فصل ${p[1]}`,v+' متأخر',Math.round(v/mB*100),'alt2',`fltCls('${p[0]}','${p[1]}')`);}).join('')||'<p class="sub">لا بيانات في الفترة</p>';
+ const bg={};rows.forEach(r=>bg[r.grade]=(bg[r.grade]||0)+1);
+ const mG=Math.max(1,...Object.values(bg));
+ $('grd-chart').innerHTML=GRADES.map(g=>{const v=bg[g]||0;return barRow(g,v+' متأخر',Math.round(v/mG*100),'',`fltGrd('${g}')`);}).join('');
+ const pc={};rows.forEach(r=>{const k=r.name+'|'+r.grade+'|'+r.cls;pc[k]=(pc[k]||0)+1;});
+ const pt=Object.entries(pc).map(([k,v])=>{const p=k.split('|');return{nm:p[0],g:p[1],c:p[2],v};}).sort((a,b)=>b.v-a.v).slice(0,8);
+ const mP=pt.length?pt[0].v:1;
+ $('dash-top-st').innerHTML=pt.map((s,i)=>barRow((i===0&&s.v>=3?'⭐ ':'')+esc(s.nm),`${esc(s.g)} / ${s.c} • ${s.v}×${s.v>=3?' متكرر':''}`,Math.round(s.v/mP*100),'',`fltName('${jsq(s.nm)}')`)).join('')||'<p class="sub">لا بيانات في الفترة</p>';
+}
+function fltBy(n){const o=[...$('qb').options].map(x=>x.value);$('qb').value=o.includes(n)?n:'';render();$('tb').scrollIntoView({behavior:'smooth',block:'center'});}
+function fltName(n){$('q').value=n;$('qb').value='';render();}
+function fltGrd(g){$('qg').value=g;$('qc').value='';render();}
+function fltCls(g,c){$('qg').value=g;$('qc').value=c;render();}
+function clearFilters(){$('q').value='';$('qg').value='';$('qc').value='';if($('qb'))$('qb').value='';render();}
+onScope();
+boot();
+async function boot(){
+ await fbBoot();
+ if(sess&&sess.type==='admin'){enter();}
+ else if(sess&&sess.username){
+  let ok=Users.some(u=>u.username===sess.username);
+  if(!ok&&cloud()){try{const s=await db.ref('hasan/v1/users/'+sess.username).once('value');const v=s.val();if(v){Users.push(v);save(LU,Users);sess={type:'staff',username:v.username,display:v.display,perms:v.perms,grades:v.grades};sessionStorage.setItem(LSESS,JSON.stringify(sess));ok=true;}}catch(e){}}
+  if(ok)enter();else{sess=null;sessionStorage.removeItem(LSESS);}
+ }else{sess=null;sessionStorage.removeItem(LSESS);}
+}
+</script>
+</body>
+</html>

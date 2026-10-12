@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0F172A">
+<title>بوابة حسان التعليمية 1448 | متوسطة حسان بن ثابت بقارا</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+ --bg:#F6F8FC; --card:#fff; --ink:#0F172A; --muted:#64748B; --line:#E6ECF5;
+ --primary:#4F46E5; --primary-2:#7C3AED; --sky:#0EA5E9; --amber:#F59E0B;
+ --green:#10B981; --rose:#F43F5E;
+ --r:20px; --sh:0 10px 30px rgba(15,23,42,.07);
+}
+body{font-family:'IBM Plex Sans Arabic',system-ui,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+/* NAV */
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:1240px;margin:auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary-2));display:grid;place-items:center;color:#fff}
+.brand b{font-size:17px;display:block;line-height:1.1}
+.brand span{font-size:12px;color:var(--muted);font-weight:500}
+.links{display:flex;gap:22px;font-size:14px;font-weight:600;color:#334155}
+.links a:hover{color:var(--primary)}
+.btn{font-family:inherit;font-weight:700;border:0;cursor:pointer;border-radius:12px;padding:11px 22px;font-size:14px;transition:.2s;display:inline-flex;align-items:center;gap:8px}
+.btn-p{background:var(--ink);color:#fff}
+.btn-p:hover{background:var(--primary);transform:translateY(-1px)}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;box-shadow:0 8px 20px rgba(79,70,229,.3)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-light{background:#fff;border:1.5px solid var(--line);color:var(--ink)}
+/* HERO */
+.hero{max-width:1240px;margin:28px auto 0;padding:0 24px;display:grid;grid-template-columns:1.05fr .95fr;gap:28px;align-items:center}
+@media(max-width:960px){.hero{grid-template-columns:1fr}}
+.pill{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:100px;padding:7px 14px;font-size:12.5px;font-weight:600;color:#475569;box-shadow:var(--sh)}
+.pill i{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;animation:bl 1.6s infinite}
+@keyframes bl{50%{opacity:.4}}
+.hero h1{font-size:clamp(30px,4.5vw,50px);line-height:1.35;font-weight:700;margin:18px 0 12px;letter-spacing:-.5px}
+.hero h1 .grad{background:linear-gradient(90deg,var(--primary),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);font-size:16.5px;line-height:1.9;max-width:520px}
+.cta{display:flex;gap:12px;margin-top:22px;flex-wrap:wrap}
+.mini-stats{display:flex;gap:26px;margin-top:26px}
+.mini-stats div b{font-size:22px;display:block}
+.mini-stats div span{font-size:12.5px;color:var(--muted)}
+/* Dashboard mock */
+.dash{background:#fff;border-radius:24px;border:1px solid var(--line);box-shadow:0 24px 60px rgba(15,23,42,.12);overflow:hidden}
+.dash-top{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}
+.dots{display:flex;gap:6px}.dots i{width:10px;height:10px;border-radius:50%;display:block}
+.dash-body{padding:20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:520px){.dash-body{grid-template-columns:1fr 1fr}}
+.kpi{border-radius:16px;padding:14px;background:#F8FAFC;border:1px solid var(--line)}
+.kpi small{font-size:11.5px;color:var(--muted);font-weight:600}
+.kpi b{font-size:22px;display:block;margin:2px 0}
+.kpi em{font-size:11px;font-style:normal;font-weight:700;padding:2px 8px;border-radius:100px}
+.up{background:#DCFCE7;color:#15803D}.down{background:#FEE2E2;color:#B91C1C}
+.bars{padding:0 20px 20px;display:flex;align-items:end;gap:8px;height:110px}
+.bars i{flex:1;border-radius:8px 8px 4px 4px;background:linear-gradient(180deg,var(--primary),#C7D2FE);min-height:20px}
+/* SERVICES */
+.section{max-width:1240px;margin:40px auto;padding:0 24px}
+.sec-head{display:flex;align-items:end;justify-content:space-between;margin-bottom:18px}
+.sec-head h2{font-size:24px;font-weight:700}
+.sec-head p{color:var(--muted);font-size:14px;margin-top:4px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:1020px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.grid{grid-template-columns:1fr}}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:22px;transition:.25s;position:relative;display:flex;flex-direction:column;gap:10px;cursor:pointer}
+.card:hover{transform:translateY(-6px);box-shadow:var(--sh);border-color:#C7D2FE}
+.card.live{border-color:var(--primary);box-shadow:0 12px 30px rgba(79,70,229,.15)}
+.card.live::before{content:"متاح الآن";position:absolute;top:16px;left:16px;font-size:11px;font-weight:700;background:var(--ink);color:#fff;padding:4px 11px;border-radius:100px}
+.ic{width:50px;height:50px;border-radius:14px;display:grid;place-items:center}
+.card h3{font-size:15.5px;font-weight:700}
+.card p{font-size:13px;color:var(--muted);line-height:1.8;flex:1}
+.card .go{font-size:13px;font-weight:700;color:var(--primary);display:flex;align-items:center;gap:6px;margin-top:6px}
+.card.soon{opacity:.92}
+.tag-soon{font-size:11px;background:#F1F5F9;color:#64748B;padding:4px 10px;border-radius:100px;font-weight:700}
+/* Steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+@media(max-width:760px){.steps{grid-template-columns:1fr}}
+.step{background:#0F172A;color:#E2E8F0;border-radius:var(--r);padding:24px;position:relative;overflow:hidden}
+.step::after{content:attr(data-n);position:absolute;bottom:-18px;left:6px;font-size:110px;font-weight:700;opacity:.07;line-height:1}
+.step b{font-size:15px;display:block;margin-bottom:6px;color:#fff}
+.step p{font-size:13px;color:#94A3B8;line-height:1.8}
+/* upload */
+.upload{margin-top:16px;background:#fff;border:1.5px solid var(--line);border-radius:var(--r);padding:20px 22px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.upload .file-ic{width:52px;height:52px;border-radius:14px;background:#EEF2FF;display:grid;place-items:center;flex-shrink:0}
+.upload h4{font-size:15px}.upload p{font-size:13px;color:var(--muted);margin-top:4px}
+.upload code{background:#F1F5F9;padding:2px 8px;border-radius:6px;font-size:12px;color:var(--primary)}
+footer{margin-top:44px;background:#0F172A;color:#94A3B8;text-align:center;padding:30px 20px}
+@media(max-width:640px){
+ .nav-in{padding:12px 14px}.links{display:none}
+ .hero{margin:18px auto 0}.hero-card{padding:24px 18px;border-radius:22px}
+ .cta .btn{flex:1;justify-content:center;min-height:48px}
+ .mini-stats{gap:18px}
+ .upload{padding:18px}
+}
+footer b{color:#fff}
+</style>
+</head>
+<body>
+
+<div class="nav"><div class="nav-in">
+<div class="brand">
+<div class="logo">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5"/><path d="M22 10v6"/></svg>
+</div>
+<div><b>بوابة حسان التعليمية 1448</b><span>متوسطة حسان بن ثابت بقارا</span></div>
+</div>
+<div style="display:flex;gap:14px;align-items:center">
+<div class="links" style="margin-left:10px"><a href="#">الرئيسية</a><a href="#services">الخدمات</a><a href="#how">لماذا حسان؟</a></div>
+<a class="btn btn-p" href="tardiness.html">تسجيل الدخول</a>
+</div>
+</div></div>
+
+<div class="hero">
+<div>
+<div class="pill" title="المنصة تعمل بشكل طبيعي"><i></i> العام الدراسي 1448هـ</div>
+<h1>إدارة <span class="grad">الحضور والتأخر</span> بذكاء، في ثوانٍ لا دقائق</h1>
+<p>منصة موحدة لمتوسطة حسان بن ثابت بقارا تجمع خدمات سهلة يسيرة تزامنية لحظية.</p>
+<div class="cta">
+<a class="btn btn-primary" href="tardiness.html">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+ابدأ حصر التأخر الصباحي</a>
+<a class="btn btn-light" href="#services">استكشف الخدمات</a>
+</div>
+<div class="mini-stats">
+<div><b id="st-today">0</b><span>متأخر اليوم</span></div>
+<div><b>9</b><span>خدمات مدرسية</span></div>
+<div><b id="st-students">—</b><span>طالب</span></div>
+</div>
+</div>
+
+<div class="dash">
+<div class="dash-top">
+<div style="display:flex;gap:8px;align-items:center"><div class="dots"><i style="background:#F87171"></i><i style="background:#FBBF24"></i><i style="background:#34D399"></i></div><b style="font-size:13px;margin-right:8px">لوحة التأخر الصباحي — اليوم</b></div>
+<span style="font-size:11px;background:#EEF2FF;color:#4F46E5;padding:5px 12px;border-radius:100px;font-weight:700" id="clock">--:--</span>
+</div>
+<div class="dash-body">
+<div class="kpi"><small>إجمالي المتأخرين</small><b id="k1">0</b><em class="up">مباشر</em></div>
+<div class="kpi"><small>نسبة الانضباط</small><b>98.2%</b><em class="up">+1.4%</em></div>
+<div class="kpi"><small>حالات متكررة</small><b id="k2">0</b><em class="down">تحتاج متابعة</em></div>
+</div>
+<div class="bars" id="bars"></div>
+<p style="padding:0 20px 18px;font-size:12px;color:var(--muted)">توزيع التأخر حسب الفصول — يُحدث تلقائياً من سجل اليوم</p>
+</div>
+</div>
+
+<div class="section" id="services">
+<div class="sec-head">
+<div><h2>الخدمات المدرسية</h2><p>اختر الخدمة للانتقال إليها — الخدمة المفعّلة حالياً هي حصر التأخر الصباحي</p></div>
+</div>
+<div class="grid" id="grid"></div>
+
+<div class="section" id="how" style="padding:0">
+<div class="sec-head" style="margin-top:28px"><div><h2>لماذا بوابة حسان؟</h2><p>خدمات سهلة يسيرة تزامنية لحظية</p></div></div>
+<div class="steps" style="grid-template-columns:repeat(4,1fr)">
+<div class="step" data-n="⚡"><b>تزامنية لحظية</b><p>كل إدخال يظهر للإدارة والموظفين فوراً لحظة بلحظة.</p></div>
+<div class="step" data-n="📱"><b>تعمل من الجوال</b><p>مصممة للجوال أولاً: سجّل وتابع واطبع من أي مكان.</p></div>
+<div class="step" data-n="🛡"><b>دخول آمن</b><p>حسابات للموظفين بصلاحيات وصفوف محددة من الإدارة.</p></div>
+<div class="step" data-n="📊"><b>تقارير فورية</b><p>مؤشرات وكشوفات وطباعة بضغطة زر دون انتظار.</p></div>
+</div>
+</div>
+</div>
+
+<footer><div><b>بوابة حسان التعليمية 1448</b></div><div style="font-size:12.5px;margin-top:6px">صممت لمتوسطة حسان بن ثابت بقارا</div></footer>
+
+<script src="students-data.js"></script>
+<script>
+const S=[
+ {t:"حصر التأخر الصباحي",d:"تسجيل المتأخرين يومياً بالوقت والسبب والإجراء، مع مؤشرات فورية وكشف المتكررين وتقرير قابل للطباعة.",c:"#EEF2FF",ic:"#4F46E5",svg:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>',live:true,link:"tardiness.html"},
+ {t:"مدرسة بلا ورق",d:"رقمنة المعاملات والنماذج والمستندات المدرسية والاستغناء عن الورق.",c:"#ECFDF5",ic:"#059669",svg:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M9 13h6M9 17h6"/>',live:false},
+ {t:"التعاميم الداخلية",d:"نشر التعاميم والتعليمات الإدارية ومتابعة الاطلاع عليها.",c:"#EFF6FF",ic:"#0284C7",svg:'<path d="M3 11l18-7-7 18-2.5-7.5z"/>',live:false},
+ {t:"الاجتماعات الداخلية",d:"جدولة الاجتماعات ودعواتها وتوثيق المحاضر والقرارات.",c:"#F5F3FF",ic:"#7C3AED",svg:'<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',live:false},
+ {t:"سجل الزوار الالكتروني",d:"تسجيل دخول الزوار إلكترونياً مع بيانات الزيارة والتصاريح.",c:"#FFF7ED",ic:"#EA580C",svg:'<rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h6"/>',live:false},
+ {t:"الاحالات الالكترونية",d:"إحالة الطلاب للإرشاد والجهات المعنية ومتابعة حالة الإحالة.",c:"#FDF2F8",ic:"#DB2777",svg:'<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>',live:false},
+ {t:"الاستبيانات الالكترونية",d:"تصميم الاستبانات وجمع الآراء وتحليل النتائج تلقائياً.",c:"#FFFBEB",ic:"#D97706",svg:'<path d="M3 3v18h18"/><path d="M7 15l4-6 4 3 5-8"/>',live:false},
+ {t:"التسجيل في الانشطة والبرامج",d:"التسجيل الإلكتروني في الأنشطة والبرامج المدرسية وإدارتها.",c:"#ECFEFF",ic:"#0891B2",svg:'<path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/>',live:false},
+ {t:"المكتبة الرقمية",d:"مصادر وشروحات وملخصات رقمية لجميع المواد الدراسية.",c:"#FDF2F8",ic:"#BE185D",svg:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V2H6.5A2.5 2.5 0 0 0 4 4.5v15z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/>',live:false},
+];
+document.getElementById('grid').innerHTML=S.map(s=>`
+ <a class="card ${s.live?'live':''} ${s.live?'':'soon'}" href="${s.live?s.link:'#'}">
+  <div class="ic" style="background:${s.c}">
+   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="${s.ic}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${s.svg}</svg>
+  </div>
+  <h3>${s.t}</h3><p>${s.d}</p>
+  <div style="display:flex;justify-content:space-between;align-items:center">
+   ${s.live?'<span class="go">دخول الخدمة <span>←</span></span>':'<span class="tag-soon">قريباً</span><span class="go" style="color:#94A3B8">عرض</span>'}
+  </div>
+ </a>`).join('');
+// bars mock + live numbers
+document.getElementById('bars').innerHTML=[45,70,55,90,62,80,48].map(h=>`<i style="height:${h}%"></i>`).join('');
+function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'});}
+setInterval(tick,10000);tick();
+try{
+ const t=JSON.parse(localStorage.getItem('hasan_tardiness_v1')||'[]');
+ const today=new Date().toISOString().slice(0,10);
+ const n=t.filter(x=>x.date===today).length;
+ document.getElementById('st-today').textContent=n;document.getElementById('k1').textContent=n;
+ const f={};t.forEach(r=>f[r.name]=(f[r.name]||0)+1);
+ document.getElementById('k2').textContent=Object.values(f).filter(v=>v>=3).length;
+ const st=JSON.parse(localStorage.getItem('hasan_students_v1')||'[]');
+ if(st.length)document.getElementById('st-students').textContent=st.length;
+ else if(typeof HASAN_STUDENTS!=='undefined')document.getElementById('st-students').textContent=HASAN_STUDENTS.length;
+}catch(e){}
+function dl(){
+ const csv="\ufeffالاسم,الصف,الفصل\nأحمد محمد,الأول متوسط,1/أ\nخالد سعد,الثاني متوسط,2/ب\n";
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='قالب_الطلاب.csv';a.click();
+}
+</script>
+</body>
+</html>
