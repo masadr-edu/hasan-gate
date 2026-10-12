@@ -138,7 +138,7 @@ thead th{position:sticky;top:0}
 </head>
 <body>
 <div class="nav screen-only"><div class="nav-in">
-<div class="brand"><div class="logo">◷</div><div><b>حصر التأخر الصباحي اليومي للطلاب</b><span>متوسطة حسان بن ثابت • تسجيل ومتابعة لحظية</span></div></div>
+<div class="brand"><div class="logo">◷</div><div><b>حصر التأخر الصباحي اليومي للطلاب</b><span>متوسطة حسان بن ثابت • تسجيل ومتابعة</span></div></div>
 <div class="rolebox">
 <span class="role-badge" id="role-badge">غير مسجل</span>
 <span class="role-badge" id="net-badge">💾 وضع محلي</span>
@@ -381,19 +381,23 @@ async function login(){
  if(u==='admin'){
   let ap=adminPass;
   if(cloud()){try{const s=await db.ref('hasan/v1/meta/adminPass').once('value');if(s.val()){ap=s.val();adminPass=ap;save(LA,ap);}}catch(e){}}
-  if(p!==ap){alert('بيانات الدخول غير صحيحة');return;}
+  const hp=hashPass(p);
+  if(ap!==hp&&ap!==p){alert('بيانات الدخول غير صحيحة');return;}
+  if(ap===p){adminPass=hp;save(LA,hp);wMeta();}
   sess={type:'admin',username:'admin',display:'إدارة المدرسة'};
  }else{
-  let f=Users.find(x=>x.username===u&&x.pass===p);
-  if(!f&&cloud()){try{const s=await db.ref('hasan/v1/users/'+u).once('value');const v=s.val();if(v&&v.pass===p){f=v;Users.push(v);save(LU,Users);}}catch(e){}}
+  const hp=hashPass(p);
+  let f=Users.find(x=>x.username===u&&(x.pass===hp||x.pass===p));
+  if(!f&&cloud()){try{const s=await db.ref('hasan/v1/users/'+u).once('value');const v=s.val();if(v&&(v.pass===hp||v.pass===p)){f=v;if(f.pass===p)f.pass=hp;const ix=Users.findIndex(x=>x.username===u);if(ix>=0)Users[ix]=f;else Users.push(f);save(LU,Users);wUser(f);}}catch(e){}}
   if(!f){alert('بيانات الدخول غير صحيحة');return;}
+  if(f.pass===p){f.pass=hp;save(LU,Users);wUser(f);}
   sess={type:'staff',username:f.username,display:f.display,perms:f.perms,grades:f.grades};
  }
  sessionStorage.setItem(LSESS,JSON.stringify(sess));
  $('li-pass').value='';
  enter();
 }
-function logout(){sess=null;sessionStorage.removeItem(LSESS);$('login-panel').style.display='';$('app').style.display='none';$('role-badge').textContent='غير مسجل';$('role-badge').classList.remove('admin');$('btn-out').style.display='none';}
+function logout(){clearTimeout(idleT);sess=null;sessionStorage.removeItem(LSESS);$('login-panel').style.display='';$('app').style.display='none';$('role-badge').textContent='غير مسجل';$('role-badge').classList.remove('admin');$('btn-out').style.display='none';}
 function isAdmin(){return sess&&sess.type==='admin';}
 function can(p){if(!sess)return false;if(isAdmin())return true;return !!(sess.perms&&sess.perms[p]);}
 function allowedGrades(){if(!sess)return [];if(isAdmin())return GRADES.slice();const g=(sess.grades||[]);return GRADES.filter(x=>g.includes(x));}
@@ -424,12 +428,12 @@ function enter(){
  $('dash-staff').style.display=isAdmin()?'none':'';
  $('fb-panel').style.display=isAdmin()?'':'none';
  if(isAdmin()){const c=fbCfg(),ta=$('fb-cfg');if(c&&ta&&!ta.value)ta.value=JSON.stringify(c);}
- autoMins();onGradeClass();onScope();netBadge();render();
+ autoMins();onGradeClass();onScope();netBadge();poke();render();
 }
 // ---------- إدارة الموظفين (إدارة) ----------
 function addUser(){
  if(!isAdmin())return;
- const dn=$('u-name').value.trim(), un=$('u-user').value.trim(), pw=$('u-pass').value;
+ const dn=$('u-name').value.trim(), un=$('u-user').value.trim(), pw=hashPass($('u-pass').value);
  if(!dn||!un||!pw){alert('أكمل اسم الموظف واسم المستخدم وكلمة المرور');return;}
  if(un==='admin'||Users.some(x=>x.username===un)){alert('اسم المستخدم موجود مسبقاً');return;}
  if(/[.#$\[\]\/]/.test(un)){alert('اسم المستخدم لا يقبل الرموز ( . # $ [ ] / )');return;}
@@ -443,7 +447,7 @@ function addUser(){
 }
 function downloadUsersFile(){
  if(!isAdmin())return;
- const js='// ملف الحسابات المضمّن — ولّدته الإدارة بتاريخ '+new Date().toLocaleString('ar-SA')+'\n// ضعه بجانب tardiness.html في نسخ الموظفين للدخول المباشر بيوزر/كلمة بلا استيراد\nconst HASAN_USERS_BUILTIN = '+JSON.stringify(Users)+';\nconst HASAN_ADMIN_BUILTIN = '+JSON.stringify(adminPass)+';\n';
+ const js='// ملف الحسابات المضمّن — ولّدته الإدارة بتاريخ '+new Date().toLocaleString('ar-SA')+'\n// ضعه بجانب tardiness.html في نسخ الموظفين للدخول المباشر بيوزر/كلمة بلا استيراد\n// ملاحظة أمنية: كلمة الإدارة لا تُضمّن هنا أبداً — تُدار من اللوحة وتتزامن سحابياً\nconst HASAN_USERS_BUILTIN = '+JSON.stringify(Users)+';\nconst HASAN_ADMIN_BUILTIN = "";\n';
  const a=document.createElement('a');
  a.href=URL.createObjectURL(new Blob([js],{type:'text/javascript;charset=utf-8'}));
  a.download='users-data.js';a.click();
@@ -460,8 +464,8 @@ function renderUsers(){
 }
 function togglePerm(i,k){if(!isAdmin())return;Users[i].perms[k]=!Users[i].perms[k];save(LU,Users);wUser(Users[i]);renderUsers();}
 function delUser(i){if(!isAdmin())return;if(!confirm('حذف حساب '+Users[i].display+' ؟'))return;const un=Users[i].username;Users.splice(i,1);save(LU,Users);dUser(un);renderUsers();}
-function resetPass(i){if(!isAdmin())return;const p=prompt('كلمة مرور جديدة لـ '+Users[i].display+':');if(!p)return;Users[i].pass=p;save(LU,Users);wUser(Users[i]);alert('تم التصفير ✔');}
-function changeAdminPass(){if(!isAdmin())return;const p=$('ap-new').value;if(!p||p.length<4){alert('كلمة قصيرة — 4 أحرف على الأقل');return;}adminPass=p;save(LA,p);wMeta();$('ap-new').value='';alert('تم حفظ كلمة الإدارة ✔');}
+function resetPass(i){if(!isAdmin())return;const p=prompt('كلمة مرور جديدة لـ '+Users[i].display+':');if(!p)return;Users[i].pass=hashPass(p);save(LU,Users);wUser(Users[i]);alert('تم التصفير ✔');}
+function changeAdminPass(){if(!isAdmin())return;const p=$('ap-new').value;if(!p||p.length<4){alert('كلمة قصيرة — 4 أحرف على الأقل');return;}adminPass=hashPass(p);save(LA,adminPass);wMeta();$('ap-new').value='';alert('تم حفظ كلمة الإدارة ✔');}
 // ---------- الدقائق التلقائية ----------
 function toMin(t){if(!t||t.indexOf(':')<0)return null;const[a,b]=t.split(':').map(Number);return a*60+b;}
 function autoMins(){const m=toMin($('f-time').value);if(m===null)return;$('f-mins').value=Math.max(0,m-BASE_MIN);}
@@ -694,14 +698,14 @@ function fbListen(){
   const v=s.val()||{};R=Object.values(v).sort((a,b)=>b.id-a.id);save(LT,R);render();
  });
  base.child('users').on('value',s=>{
-  const v=s.val()||{};Users=Object.values(v);save(LU,Users);if(isAdmin())renderUsers();
+  const v=s.val()||{};Users=Object.values(v);save(LU,Users);migratePass();if(isAdmin())renderUsers();
  });
  base.child('students').on('value',s=>{
   const v=s.val();
   if(v&&v.list&&v.list.length&&v.list.length!==St.length){St=v.list;save(LS,St);onGradeClass();}
  });
  base.child('meta').on('value',s=>{
-  const v=s.val()||{};if(v.adminPass&&v.adminPass!==adminPass){adminPass=v.adminPass;save(LA,v.adminPass);}
+  const v=s.val()||{};if(v.adminPass&&v.adminPass!==adminPass){adminPass=v.adminPass;save(LA,v.adminPass);}migratePass();
  });
 }
 function wRec(r){if(cloud())db.ref('hasan/v1/records/'+r.id).set(r);}
@@ -771,6 +775,51 @@ function inPeriod(ds){
  if(dashPeriod==='month')return ds>=dateAdd(ref,-29)&&ds<=ref;
  return true;
 }
+function sha256(ascii){
+ function rr(v,a){return (v>>>a)|(v<<(32-a));}
+ var maxWord=Math.pow(2,32),result='';
+ var words=[],asciiBitLength=ascii.length*8;
+ var hash=sha256.h=sha256.h||[],k=sha256.k=sha256.k||[];
+ var primeCounter=k.length,isComposite={};
+ for(var candidate=2;primeCounter<64;candidate++){
+  if(!isComposite[candidate]){
+   for(var i=0;i<313;i+=candidate)isComposite[i]=candidate;
+   hash[primeCounter]=(Math.pow(candidate,.5)*maxWord)|0;
+   k[primeCounter++]=(Math.pow(candidate,1/3)*maxWord)|0;
+  }
+ }
+ ascii+='\x80';
+ while(ascii.length%64-56)ascii+='\x00';
+ for(var i=0;i<ascii.length;i++){
+  var j=ascii.charCodeAt(i);
+  if(j>>8)return;
+  words[i>>2]|=j<<((3-i)%4)*8;
+ }
+ words[words.length]=(asciiBitLength/maxWord)|0;
+ words[words.length]=asciiBitLength;
+ for(var j=0;j<words.length;){
+  var w=words.slice(j,j+=16),oldHash=hash;
+  hash=hash.slice(0,8);
+  for(var i=0;i<64;i++){
+   var w15=w[i-15],w2=w[i-2],a=hash[0],e=hash[4];
+   var temp1=hash[7]+(rr(e,6)^rr(e,11)^rr(e,25))+((e&hash[5])^((~e)&hash[6]))+k[i]
+    +(w[i]=(i<16)?w[i]:(w[i-16]+(rr(w15,7)^rr(w15,18)^(w15>>>3))+w[i-7]+(rr(w2,17)^rr(w2,19)^(w2>>>10)))|0);
+   var temp2=(rr(a,2)^rr(a,13)^rr(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));
+   hash=[(temp1+temp2)|0].concat(hash);hash[4]=(hash[4]+temp1)|0;
+  }
+  for(var i=0;i<8;i++)hash[i]=(hash[i]+oldHash[i])|0;
+ }
+ for(var i=0;i<8;i++){for(var j=3;j+1;j--){var b=(hash[i]>>(j*8))&255;result+=((b<16)?0:'')+b.toString(16);}}
+ return result;
+}
+function hashPass(s){return sha256(unescape(encodeURIComponent(s)));}
+function isHash(s){return typeof s==='string'&&/^[0-9a-f]{64}$/.test(s);}
+async function migratePass(){
+ let ch=false;
+ for(const u of Users){if(u.pass&&!isHash(u.pass)){u.pass=hashPass(u.pass);ch=true;wUser(u);}}
+ if(ch)save(LU,Users);
+ if(adminPass&&!isHash(adminPass)){adminPass=hashPass(adminPass);save(LA,adminPass);wMeta();}
+}
 function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;');}
 function jsq(s){return String(s??'').replace(/\\/g,'\\\\').replace(/'/g,"\\'");}
 function fillBy(){
@@ -833,8 +882,12 @@ function fltCls(g,c){$('qg').value=g;$('qc').value=c;render();}
 function clearFilters(){$('q').value='';$('qg').value='';$('qc').value='';if($('qb'))$('qb').value='';render();}
 onScope();
 boot();
+let idleT=null;
+function poke(){if(!sess)return;clearTimeout(idleT);idleT=setTimeout(()=>{if(sess){alert('انتهت الجلسة لعدم النشاط — سجل الدخول مجدداً');logout();}},30*60*1000);}
+['click','keydown','touchstart'].forEach(e=>document.addEventListener(e,poke,{passive:true}));
 async function boot(){
  await fbBoot();
+ await migratePass();
  if(sess&&sess.type==='admin'){enter();}
  else if(sess&&sess.username){
   let ok=Users.some(u=>u.username===sess.username);
